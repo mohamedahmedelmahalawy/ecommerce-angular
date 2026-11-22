@@ -1,1 +1,94 @@
-<p>login works!</p>
+<form
+  [formGroup]="loginForm"
+  (ngSubmit)="login()"
+  class="flex flex-col gap-6 w-full max-w-md mx-auto my-10 px-4"
+>
+  <h1 class="text-4xl font-normal text-green-700 mb-2">Login Now:</h1>
+
+  @if (apiErrorMessage) {
+    <div
+      class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 border border-red-200"
+      role="alert"
+    >
+      <span class="font-medium">{{ apiErrorMessage }}</span>
+    </div>
+  }
+
+  <div class="flex flex-col-reverse gap-2">
+    <input
+      type="text"
+      formControlName="email"
+      name="email"
+      id="email"
+      class="w-full py-2 border-0 border-b-2 border-gray-300 outline-none focus:border-green-700 text-gray-900 bg-transparent transition-colors"
+    />
+    <label for="email" class="text-sm text-gray-600">User Email</label>
+  </div>
+  @if (emailControl?.errors && emailControl?.touched) {
+    <div
+      class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 border border-red-200"
+      role="alert"
+    >
+      <span class="font-medium">
+        @if (emailControl?.errors?.['required']) {
+          Required
+        } @else if (emailControl?.errors?.['email']) {
+          Invalid email
+        }
+      </span>
+    </div>
+  }
+
+  <div class="flex flex-col-reverse gap-2">
+    <input
+      type="password"
+      formControlName="password"
+      name="password"
+      id="password"
+      class="w-full py-2 border-0 border-b-2 border-gray-300 outline-none focus:border-green-700 text-gray-900 bg-transparent transition-colors"
+    />
+    <label for="password" class="text-sm text-gray-600">User Password</label>
+  </div>
+  @if (passwordControl?.errors && passwordControl?.touched) {
+    <div
+      class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 border border-red-200"
+      role="alert"
+    >
+      <span class="font-medium">
+        @if (passwordControl?.errors?.['required']) {
+          Required
+        } @else if (passwordControl?.errors?.['minlength']) {
+          Minimum length is 6
+        } @else if (passwordControl?.errors?.['pattern']) {
+          Password must contain at least one uppercase letter, one lowercase letter, and one number
+        }
+      </span>
+    </div>
+  }
+
+  <div class="flex flex-wrap items-center gap-6">
+    <button
+      [disabled]="!loginForm.valid || callingApi"
+      [class.bg-gray-800]="!loginForm.valid || callingApi"
+      [class.cursor-not-allowed]="!loginForm.valid || callingApi"
+      [class.hover:bg-emerald-900]="loginForm.valid && !callingApi"
+      class="self-start bg-emerald-800 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+    >
+      @if (callingApi) {
+        <i class="fa fa-spin fa-spinner"></i>
+      } @else {
+        Login
+      }
+    </button>
+
+    <p class="text-sm text-gray-500">
+      You don't have an account yet?
+      <a
+        href="/register"
+        class="font-semibold text-gray-700 hover:text-emerald-700 transition-colors"
+      >
+        Register
+      </a>
+    </p>
+  </div>
+</form>

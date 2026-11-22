@@ -2,6 +2,7 @@
 
 @import 'tailwindcss';
 
-@plugin "flowbite/plugin";
+@import 'flowbite/src/themes/default';
 
-@source "../node_modules/flowbite";
+@plugin 'flowbite/plugin';
+@source '../node_modules/flowbite';

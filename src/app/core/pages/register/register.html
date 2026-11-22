@@ -1,1 +1,177 @@
-<p>register works!</p>
+<form
+  [formGroup]="registerForm"
+  (ngSubmit)="register()"
+  class="flex flex-col gap-6 w-full max-w-md mx-auto my-10 px-4"
+>
+  <h1 class="text-4xl font-normal text-green-700 mb-2">Register Now:</h1>
+
+  @if (apiErrorMessage) {
+    <div
+      class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 border border-red-200"
+      role="alert"
+    >
+      <span class="font-medium">{{ apiErrorMessage }}</span>
+    </div>
+  }
+
+  <div class="flex flex-col-reverse gap-2">
+    <input
+      type="text"
+      formControlName="name"
+      name="name"
+      id="name"
+      class="w-full py-2 border-0 border-b-2 border-gray-300 outline-none focus:border-green-700 text-gray-900 bg-transparent transition-colors"
+    />
+    <label for="name" class="text-sm text-gray-600">User Name</label>
+  </div>
+  @if (nameControl?.errors && nameControl?.touched) {
+    <div
+      class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 border border-red-200"
+      role="alert"
+    >
+      <span class="font-medium">
+        @if (nameControl?.errors?.['required']) {
+          Required
+        } @else if (nameControl?.errors?.['minlength']) {
+          Minimum length is 3
+        } @else if (nameControl?.errors?.['maxlength']) {
+          Maximum length is 10
+        }
+      </span>
+    </div>
+  }
+
+  <div class="flex flex-col-reverse gap-2">
+    <input
+      type="text"
+      formControlName="email"
+      name="email"
+      id="email"
+      class="w-full py-2 border-0 border-b-2 border-gray-300 outline-none focus:border-green-700 text-gray-900 bg-transparent transition-colors"
+    />
+    <label for="email" class="text-sm text-gray-600">User Email</label>
+  </div>
+  @if (emailControl?.errors && emailControl?.touched) {
+    <div
+      class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 border border-red-200"
+      role="alert"
+    >
+      <span class="font-medium">
+        @if (emailControl?.errors?.['required']) {
+          Required
+        } @else if (emailControl?.errors?.['email']) {
+          Invalid email
+        }
+      </span>
+    </div>
+  }
+
+  <div class="flex flex-col-reverse gap-2">
+    <input
+      type="password"
+      formControlName="password"
+      name="password"
+      id="password"
+      class="w-full py-2 border-0 border-b-2 border-gray-300 outline-none focus:border-green-700 text-gray-900 bg-transparent transition-colors"
+    />
+    <label for="password" class="text-sm text-gray-600">User Password</label>
+  </div>
+  @if (passwordControl?.errors && passwordControl?.touched) {
+    <div
+      class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 border border-red-200"
+      role="alert"
+    >
+      <span class="font-medium">
+        @if (passwordControl?.errors?.['required']) {
+          Required
+        } @else if (passwordControl?.errors?.['minlength']) {
+          Minimum length is 6
+        } @else if (passwordControl?.errors?.['pattern']) {
+          Password must contain at least one uppercase letter, one lowercase letter, and one number
+        }
+      </span>
+    </div>
+  }
+  <div class="flex flex-col-reverse gap-2">
+    <input
+      type="password"
+      formControlName="rePassword"
+      name="rePassword"
+      id="rePassword"
+      class="w-full py-2 border-0 border-b-2 border-gray-300 outline-none focus:border-green-700 text-gray-900 bg-transparent transition-colors"
+    />
+    <label for="rePassword" class="text-sm text-gray-600">User RePassword</label>
+  </div>
+  @if (rePasswordControl?.errors && rePasswordControl?.touched) {
+    <div
+      class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 border border-red-200"
+      role="alert"
+    >
+      <span class="font-medium">
+        @if (rePasswordControl?.errors?.['required']) {
+          Required
+        } @else if (rePasswordControl?.errors?.['minlength']) {
+          Minimum length is 6
+        } @else if (rePasswordControl?.errors?.['pattern']) {
+          Password must contain at least one uppercase letter, one lowercase letter, and one number
+        }
+      </span>
+    </div>
+  }
+
+  @if (registerForm?.errors?.['mismatch'] && rePasswordControl?.touched) {
+    <div
+      class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 border border-red-200"
+      role="alert"
+    >
+      password and confirm password do not match
+    </div>
+  }
+
+  <div class="flex flex-col-reverse gap-2">
+    <input
+      type="phone"
+      formControlName="phone"
+      name="phone"
+      id="phone"
+      class="w-full py-2 border-0 border-b-2 border-gray-300 outline-none focus:border-green-700 text-gray-900 bg-transparent transition-colors"
+    />
+    <label for="phone" class="text-sm text-gray-600">User phone</label>
+  </div>
+  @if (phoneControl?.errors && phoneControl?.touched) {
+    <div
+      class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 border border-red-200"
+      role="alert"
+    >
+      <span class="font-medium">
+        @if (phoneControl?.errors?.['required']) {
+          Required
+        } @else if (phoneControl?.errors?.['pattern']) {
+          Invalid phone number
+        }
+      </span>
+    </div>
+  }
+  <div class="flex flex-wrap items-center gap-6">
+    <button
+      [disabled]="!registerForm.valid || callingApi"
+      [class.bg-gray-800]="!registerForm.valid || callingApi"
+      [class.cursor-not-allowed]="!registerForm.valid || callingApi"
+      [class.hover:bg-emerald-900]="registerForm.valid && !callingApi"
+      class="self-start bg-emerald-800 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+    >
+      @if (callingApi) {
+        <i class="fa fa-spin fa-spinner"></i>
+      } @else {
+        Register
+      }
+    </button>
+
+    <p class="text-sm text-gray-500">
+      You have an account yet?
+      <a href="/login" class="font-semibold text-gray-700 hover:text-emerald-700 transition-colors">
+        Login in
+      </a>
+    </p>
+  </div>
+</form>
