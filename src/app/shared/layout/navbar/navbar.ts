@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { initFlowbite } from 'flowbite/lib/esm/components';
-import { FlowbitService } from '../../services/flowbit/flowbit-service';
+
+import { AuthService } from '../../../core/services/auth/auth-service';
 
 @Component({
   imports: [RouterLink, RouterLinkActive],
@@ -10,13 +10,19 @@ import { FlowbitService } from '../../services/flowbit/flowbit-service';
   templateUrl: './navbar.html',
 })
 export class Navbar {
-  _flowbitService = inject(FlowbitService);
-
-  ngOnInit() {
-    this._flowbitService.loadFlowbite(() => {
-      console.log('Hi from browser');
-      initFlowbite();
+  isLoggedIn: boolean = false;
+  constructor(private _authService: AuthService) {
+    this._authService.userData.subscribe((res) => {
+      console.log('Hello from Navbar', res);
+      if (res) {
+        this.isLoggedIn = true;
+      } else {
+        this.isLoggedIn = false;
+      }
     });
-    console.log('Hi from both');
+  }
+
+  logOut() {
+    this._authService.signOut();
   }
 }

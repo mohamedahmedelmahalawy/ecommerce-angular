@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { afterNextRender, afterRenderEffect, Component } from '@angular/core';
 
 @Component({
   imports: [],
@@ -6,4 +6,16 @@ import { Component } from '@angular/core';
   styleUrl: './home.css',
   templateUrl: './home.html',
 })
-export class Home {}
+export class Home {
+  constructor() {
+    // if (typeof window != 'undefined' && window.document) {
+    //   console.log(document.title);
+    // }
+
+    // afterRenderEffect(() => {
+    //   console.log(document.title);
+    // });
+
+    afterNextRender(() => {});
+  }
+}

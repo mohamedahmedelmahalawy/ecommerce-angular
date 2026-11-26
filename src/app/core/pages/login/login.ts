@@ -42,7 +42,12 @@ export class Login {
       //call API
       this._authService.signIn(this.loginForm.value).subscribe({
         next: (res) => {
-          console.log(res);
+          // console.log(res);
+          // console.log(res.message);
+          // console.log(res.token);
+          // console.log(res.user);
+          localStorage.setItem('token', res.token);
+          this._authService.saveUserData();
           this.callingApi = false;
           this._cdr.detectChanges();
           this.router.navigate(['/home']);
